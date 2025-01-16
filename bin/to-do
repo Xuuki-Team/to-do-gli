@@ -29,25 +29,35 @@ class App
   desc 'Describe some flag here'
   default_value 'the default'
   arg_name 'The name of the argument'
-  flag [:f,:flagname]
+  # flag [:f,:flagname] 
+  flag :f
 
   desc 'Describe new here'
   arg_name 'Describe arguments to new here'
   command :new do |c|
     c.desc 'Describe a switch to new'
-    c.switch :s
+    # c.switch :s
 
     c.desc 'Describe a flag to new'
     c.default_value 'default'
-    c.flag :f
+    # c.flag :f
+    c.flag :priority
+    c.switch :f
+
     c.action do |global_options,options,args|
+      puts "Global:"
+      puts "-f - #{global_options[:f]}"
+      puts "Command:"
+      puts "-f - #{options[:f] ? 'true' : 'false'}"
+      puts "-p - #{options[:p]}"
+      puts "args - #{args.join(',')}"
 
       # Your command logic here
 
       # If you have any errors, just raise them
       # raise "that command made no sense"
 
-      puts "new command ran"
+      # puts "new command ran"
     end
   end
 
