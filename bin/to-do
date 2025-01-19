@@ -13,6 +13,8 @@ rescue LoadError
   exit 64
 end
 
+TODO_FILE="todo.txt"
+
 class App
   extend GLI::App
 
@@ -31,6 +33,10 @@ class App
   arg_name 'The name of the argument'
   # flag [:f,:flagname] 
   flag :f
+
+  def self.write_todo(file, name, created = Time.now, completed = '')        
+    file.puts("#{name},#{created},#{completed}")                             
+  end
 
   desc 'Describe new here'
   arg_name 'Describe arguments to new here'
@@ -53,6 +59,12 @@ class App
       puts "args - #{args.join(',')}"
 
       # Your command logic here
+      new_task = ARGV.shift
+
+      File.open(TODO_FILE,'a') do |file|
+        write_todo(file,new_task)
+        puts "Task added."
+      end
 
       # If you have any errors, just raise them
       # raise "that command made no sense"
