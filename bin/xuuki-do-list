@@ -1,36 +1,27 @@
 #!/usr/bin/env ruby
 require 'gli'
-begin # XXX: Remove this begin/rescue before distributing your app
-require 'to-do'
+# begin # XXX: Remove this begin/rescue before distributing your app
+require 'xuuki-do-list'
 
 require 'rubygems'
 include GLI::App
 
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/to-do` to run your app"
-  exit 64
-end
-
-TODO_FILE="todo.txt"
+TODO_FILE = File.expand_path('~/todo.txt')
 
 class App
   extend GLI::App
 
-  program_desc 'Describe your application here'
+  program_desc 'Manage tasks in a todo list'
 
-  version ToDo::VERSION
+  version XuukiToDo::VERSION
 
   subcommand_option_handling :normal
   arguments :strict
 
-  desc 'Describe some switch here'
-  switch [:s,:switch]
-
-  desc 'Describe some flag here'
-  default_value 'the default'
-  arg_name 'The name of the argument'
-  # flag [:f,:flagname] 
-  flag :f
+  desc 'Path to the todo file'
+  default_value '~/.todo.txt'
+  arg_name 'todo_file'
+  flag [:f,:filename] 
 
   def self.write_todo(file, name, created = Time.now, completed = '')        
     file.puts("#{name},#{created},#{completed}")                             
@@ -40,16 +31,21 @@ class App
     line.chomp.split(/,/)
   end
 
-  desc 'Describe new here'
-  arg_name 'Describe arguments to new here'
-  command :new do |c|
-    c.desc 'Describe a switch to new'
-    # c.switch :s
+  desc 'Create a new task in the task list'
+  long_desc """
+  A task has a name and a priority. By default, new tasks
+  have the lowest possible priority, though this can be
+  overridden.
+  """
 
-    c.desc 'Describe a flag to new'
-    c.default_value 'default'
-    # c.flag :f
-    c.flag :priority
+  arg_name 'task_name'
+  command :new do |c|
+    c.desc 'set the priority of the new task, 1 being the highest'
+    c.arg_name 'priority'
+    c.flag :p
+
+    c.desc 'put the new task first in the list'
+    c.arg_name 'priority'
     c.switch :f
 
     c.action do |global_options,options,args|
@@ -70,7 +66,7 @@ class App
     end
   end
 
-  desc 'Describe list here'
+  desc 'List tasks'
   arg_name 'Describe arguments to list here'
   command :list do |c|
     c.action do |global_options, options, args| 
@@ -86,12 +82,10 @@ class App
           counter += 1
         end
       end
-
-
     end
   end
 
-  desc 'Describe done here'
+  desc 'Complete a task'
   arg_name 'Describe arguments to done here'
   command :done do |c|
     c.action do |global_options,options,args|

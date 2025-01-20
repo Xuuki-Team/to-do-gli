@@ -1,6 +1,6 @@
-= to-do
+= xuuki-do-list
 
 Describe your project here
 
-:include:to-do.rdoc
+:include:xuuki-do-list.rdoc
 

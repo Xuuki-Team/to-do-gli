@@ -5,10 +5,10 @@ require 'rdoc/task'
 Rake::RDocTask.new do |rd|
   rd.main = "README.rdoc"
   rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
-  rd.title = 'Your application title'
+  rd.title = 'xuuki-do-list'
 end
 
-spec = Gem::Specification.load("to-do.gemspec")
+spec = Gem::Specification.load("xuuki-do-list.gemspec")
 
 Gem::PackageTask.new(spec) do |pkg|
 end
