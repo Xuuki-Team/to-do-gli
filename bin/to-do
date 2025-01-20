@@ -8,8 +8,6 @@ include GLI::App
 
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/to-do` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/to-do now"
   exit 64
 end
 
@@ -36,6 +34,10 @@ class App
 
   def self.write_todo(file, name, created = Time.now, completed = '')        
     file.puts("#{name},#{created},#{completed}")                             
+  end
+
+  def self.read_todo(line)
+    line.chomp.split(/,/)
   end
 
   desc 'Describe new here'
@@ -65,30 +67,27 @@ class App
         write_todo(file,new_task)
         puts "Task added."
       end
-
-      # If you have any errors, just raise them
-      # raise "that command made no sense"
-
-      # puts "new command ran"
     end
   end
 
   desc 'Describe list here'
   arg_name 'Describe arguments to list here'
   command :list do |c|
-    c.flag :s
-    c.action do |global_options,options,args|
-      todos = read_todos(global_options[:filename])
-      if options[:s] == 'name'
-        todos = todos.sort { |a,b| a <=> b }
+    c.action do |global_options, options, args| 
+      File.open(TODO_FILE,'r') do |file|
+        counter = 1
+        file.readlines.each do |line|
+          name,created,completed = read_todo(line)
+          printf("%3d - %s\n",counter,name)
+          printf("      Created : %s\n",created)
+          unless completed.nil?
+            printf("      Completed : %s\n",completed)
+          end
+          counter += 1
+        end
       end
-      todos.each do |todo|
-        puts todo
-      end
-      puts "Global:"
-      puts "-f - #{global_options[:f]}"
-      puts "Command:"
-      puts "-s - #{options[:s]}"
+
+
     end
   end
 
@@ -98,6 +97,32 @@ class App
     c.action do |global_options,options,args|
       puts "Global:"
       puts "-f - #{global_options[:f]}"
+
+      task_number = ARGV.shift.to_i                                                 
+       if File.exist?(TODO_FILE)                                                     
+         File.open(TODO_FILE, 'r') do |file|                                         
+           File.open("#{TODO_FILE}.new", 'w') do |new_file|                          
+             counter = 1                                                             
+             file.readlines.each do |line|                                           
+               name, created, completed = line.chomp.split(/,/)                      
+               if task_number == counter                                             
+                 new_file.puts("#{name},#{created},#{Time.now}")                     
+                 puts "Task #{counter} completed"                                    
+               else                                                                  
+                 new_file.puts("#{name},#{created},#{completed}")                    
+               end                                                                   
+               counter += 1                                                          
+             end                                                                     
+           end                                                                       
+         end                                                                         
+         `mv #{TODO_FILE}.new #{TODO_FILE}`                                          
+       else                                                                          
+         puts "No such file: #{TODO_FILE}"                                           
+       end
+
+
+
+      
     end
   end
 
