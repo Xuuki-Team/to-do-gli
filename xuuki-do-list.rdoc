@@ -1,0 +1,5 @@
+= xuuki-do-list
+
+Generate this with
+    xuuki-do-list _doc
+After you have described your command line interface
