@@ -69,15 +69,29 @@ class App
   desc 'List tasks'
   arg_name 'Describe arguments to list here'
   command :list do |c|
+    c.desc 'Format of the output'
+    c.arg_name 'csv|pretty'
+    c.default_value 'pretty'
+    c.flag :format
+
     c.action do |global_options, options, args| 
+
       File.open(TODO_FILE,'r') do |file|
         counter = 1
+
         file.readlines.each do |line|
           name,created,completed = read_todo(line)
-          printf("%3d - %s\n",counter,name)
-          printf("      Created : %s\n",created)
-          unless completed.nil?
-            printf("      Completed : %s\n",completed)
+          status = completed.nil? || completed.empty? ? "INCOMPLETE" : "DONE"
+
+          if options[:format] == 'pretty'                                    
+            # Use the pretty-print format                                    
+            printf("%3d - %s\n", counter, name)                              
+            printf("      Created : %s\n", created)                          
+            printf("      Status  : %s\n", status)                           
+            printf("      Completed : %s\n", completed) unless completed.nil? || completed.empty?                                                        
+          elsif options[:format] == 'csv'                                    
+            # Use the machine-readable CSV format                            
+            printf("%d,%s,%s,%s,%s\n", counter, name, status, created,completed)                                                                 
           end
           counter += 1
         end
@@ -113,10 +127,6 @@ class App
        else                                                                          
          puts "No such file: #{TODO_FILE}"                                           
        end
-
-
-
-      
     end
   end
 
