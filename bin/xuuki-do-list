@@ -16,12 +16,17 @@ class App
   version XuukiToDo::VERSION
 
   subcommand_option_handling :normal
-  arguments :strict
+  # arguments :strict
 
   desc 'Path to the todo file'
   default_value '~/.todo.txt'
   arg_name 'todo_file'
   flag [:f,:filename] 
+
+  desc 'URL to Github'
+  desc 'URL to Github'                                               
+  arg_name 'http://example.com'                                                     
+  flag [:url]                                               
 
   def self.write_todo(file, name, created = Time.now, completed = '')        
     file.puts("#{name},#{created},#{completed}")                             
