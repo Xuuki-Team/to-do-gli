@@ -10,6 +10,7 @@ TODO_FILE = File.expand_path('~/todo.txt')
 
 class App
   extend GLI::App
+  config_file File.join(ENV['HOME'],'.xuuki-do-list.rc.yaml')
 
   program_desc 'Manage tasks in a todo list'
 
@@ -22,11 +23,6 @@ class App
   default_value '~/.todo.txt'
   arg_name 'todo_file'
   flag [:f,:filename] 
-
-  desc 'URL to Github'
-  desc 'URL to Github'                                               
-  arg_name 'http://example.com'                                                     
-  flag [:url]                                               
 
   def self.write_todo(file, name, created = Time.now, completed = '')        
     file.puts("#{name},#{created},#{completed}")                             
