@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'gli'
-# begin # XXX: Remove this begin/rescue before distributing your app
 require 'xuuki-do-list'
 
 require 'rubygems'
@@ -40,6 +39,7 @@ class App
   """
 
   arg_name 'task_name'
+
   command :new do |c|
     c.desc 'set the priority of the new task, 1 being the highest'
     c.arg_name 'priority'
@@ -77,8 +77,15 @@ class App
     c.flag :format
 
     c.action do |global_options, options, args| 
+      puts "Global:"
+      puts "-f - #{global_options[:f]}"
+      puts "Command:"
+      puts "-f - #{options[:f] ? 'true' : 'false'}"
+      puts "-p - #{options[:p]}"
+      puts "args - #{args.join(' ')}"
+      todo_file = File.expand_path(global_options[:f] || TODO_FILE)
 
-      File.open(TODO_FILE,'r') do |file|
+      File.open(todo_file,'r') do |file|
         counter = 1
 
         file.readlines.each do |line|
@@ -107,11 +114,16 @@ class App
     c.action do |global_options,options,args|
       puts "Global:"
       puts "-f - #{global_options[:f]}"
+      puts "Command:"
+      puts "-f - #{options[:f] ? 'true' : 'false'}"
+      puts "-p - #{options[:p]}"
+      puts "args - #{args.join(' ')}"
+      todo_file = File.expand_path(global_options[:f] || TODO_FILE)
 
       task_number = ARGV.shift.to_i                                                 
-       if File.exist?(TODO_FILE)                                                     
-         File.open(TODO_FILE, 'r') do |file|                                         
-           File.open("#{TODO_FILE}.new", 'w') do |new_file|                          
+       if File.exist?(todo_file)                                                     
+         File.open(todo_file, 'r') do |file|                                         
+           File.open("#{todo_file}.new", 'w') do |new_file|                          
              counter = 1                                                             
              file.readlines.each do |line|                                           
                name, created, completed = line.chomp.split(/,/)                      
@@ -125,9 +137,9 @@ class App
              end                                                                     
            end                                                                       
          end                                                                         
-         `mv #{TODO_FILE}.new #{TODO_FILE}`                                          
+         `mv #{todo_file}.new #{todo_file}`                                          
        else                                                                          
-         puts "No such file: #{TODO_FILE}"                                           
+         puts "No such file: #{todo_file}"                                           
        end
     end
   end
