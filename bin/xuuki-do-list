@@ -100,7 +100,8 @@ class App
             printf("      Completed : %s\n", completed) unless completed.nil? || completed.empty?                                                        
           elsif options[:format] == 'csv'                                    
             # Use the machine-readable CSV format                            
-            printf("%d,%s,%s,%s,%s\n", counter, name, status, created,completed)                                                                 
+            complete_flag = completed ? "C" : "U"
+            printf("%d,%s,%s,%s,%s\n", counter, name.upcase, status, created,completed)                                                                 
           end
           counter += 1
         end

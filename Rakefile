@@ -2,6 +2,9 @@ require 'rake/clean'
 require 'rubygems'
 require 'rubygems/package_task'
 require 'rdoc/task'
+require 'cucumber'
+require 'cucumber/rake/task'
+
 Rake::RDocTask.new do |rd|
   rd.main = "README.rdoc"
   rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
@@ -19,3 +22,8 @@ Rake::TestTask.new do |t|
 end
 
 task :default => :test
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "features --format pretty -x"
+  t.fork = false
+end
