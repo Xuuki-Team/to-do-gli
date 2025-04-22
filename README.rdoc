@@ -4,3 +4,5 @@ Describe your project here
 
 :include:xuuki-do-list.rdoc
 
+gem install cucumber
+
