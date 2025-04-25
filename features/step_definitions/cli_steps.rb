@@ -8,8 +8,8 @@ When('I successfully run `todo -f \/tmp\/todo.txt new {string}`') do |task|
  raise "Command failed: #{command}" unless $?.success?
 end
 
-Then('I successfully run `todo -f \/tmp\/todo.txt list`') do
-  command = "bundle exec bin/xuuki-do-list -f /tmp/todo.txt list"
+Then('I successfully run `todo -f \/tmp\/todo.txt list --format=csv`') do
+  command = "bundle exec bin/xuuki-do-list -f /tmp/todo.txt list --format=csv"
   @output = `#{command}`
   raise "Command failed: #{command}" unless $?.success?
 end
