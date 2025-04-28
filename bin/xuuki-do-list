@@ -19,7 +19,7 @@ class App
   # arguments :strict
 
   desc 'Path to the todo file'
-  default_value '~/.todo.txt'
+  default_value File.join(ENV['HOME'],'.todo.txt')
   arg_name 'todo_file'
   flag [:f,:filename] 
 

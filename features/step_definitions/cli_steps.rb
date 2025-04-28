@@ -19,3 +19,11 @@ And('the stdout should contain {string}') do |expected_output|
     raise "Expected output to include '#{expected_output}', but it was '#{@output}'"
   end
 end
+
+Given /^there is no task list in my home directory$/ do
+  step %(the file "#{ENV['HOME']}/.todo.txt" doesn't exist)
+end
+
+Then /^the task list should exist in my home directory$/ do
+  step %(a file named "#{ENV['HOME']}/.todo.txt" should exist)
+end
