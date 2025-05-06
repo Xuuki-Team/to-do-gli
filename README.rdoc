@@ -1,6 +1,7 @@
 = xuuki-do-list
 
 Describe your project here
+run 'rake features' - to describe what the app is
 
 :include:xuuki-do-list.rdoc
 
