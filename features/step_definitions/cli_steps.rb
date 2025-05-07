@@ -42,13 +42,20 @@ Given('there is no task list in my home directory') do
   step %(the file "#{ENV['HOME']}/.todo.txt" doesn't exist)                                    
 end
 
-When('I successfully run `todo new {string}`') do |string|
-  command = "bundle exec bin/xuuki-do-list  new {string}"
-  @output = `#{command}`                                                                                                                                                    
-  expect($?.exitstatus).to eq(0)
+When('I successfully run `todo new {string}`') do |string|                                     
+  command = "bundle exec bin/xuuki-do-list new '#{string}'"                                    
+  @output = `#{command}`                                                                       
+  expect($?.exitstatus).to eq(0)                                                               
 end
 
 Then('the task list should exist in my home directory') do                                     
   file_path = "#{ENV['HOME']}/.todo.txt"                                                       
   expect(File).to exist(file_path)                                                             
+end
+
+When('I successfully run `todo list`') do
+  command = "bundle exec bin/xuuki-do-list list"
+  @output = `#{command}`
+  expect($?.exitstatus).to eq(0)
+  expect(@output).to include("Status  : INCOMPLETE")
 end
