@@ -36,3 +36,14 @@ And('the stdout should contain {string}') do |string|
   expect(@output).to include("1 - Some new task")
 end
 
+# Next scenario
+
+Given('there is no task list in my home directory') do                                         
+  step %(the file "#{ENV['HOME']}/.todo.txt" doesn't exist)                                    
+end
+
+When('I successfully run `todo new {string}`') do |string|
+  command = "bundle exec bin/xuuki-do-list  new {string}"
+  @output = `#{command}`                                                                                                                                                    
+  expect($?.exitstatus).to eq(0)
+end

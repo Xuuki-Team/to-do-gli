@@ -7,3 +7,8 @@ Scenario: Add a new task
   When I successfully run `todo -f /tmp/todo.txt new 'Some new task'`
   Then I successfully run `todo -f /tmp/todo.txt list`
   And the stdout should contain "Some new task"
+
+Scenario: The list is in our home directry by default
+  Given there is no task list in my home directory
+  When I successfully run `todo new 'Some new task'`
+  
