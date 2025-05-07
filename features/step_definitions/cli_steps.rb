@@ -47,3 +47,8 @@ When('I successfully run `todo new {string}`') do |string|
   @output = `#{command}`                                                                                                                                                    
   expect($?.exitstatus).to eq(0)
 end
+
+Then('the task list should exist in my home directory') do                                     
+  file_path = "#{ENV['HOME']}/.todo.txt"                                                       
+  expect(File).to exist(file_path)                                                             
+end
