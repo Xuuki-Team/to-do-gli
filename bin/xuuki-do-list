@@ -2,7 +2,7 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'gli'
 require 'xuuki-do-list'
-require 'todo/todo.rb'
+require 'todo.rb'
 require 'rubygems'
 
 include Todo
