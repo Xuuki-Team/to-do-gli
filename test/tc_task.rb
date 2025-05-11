@@ -25,4 +25,17 @@ class TaskTest < Test::Unit::TestCase
     expected = "You must provide tasks on the command-line or standard input"
     assert_equal expected, ex.message
   end
+
+  def test_proper_working
+    string_io = StringIO.new
+    File.stubs(:open).yields(string_io)
+    global_options = { f: 'todo.txt' }                                                                        
+    options = { f: true, p: nil }                                                                             
+    args = ["This is a task"]
+    new_task(global_options, options, args)
+
+    # Split the output by commas and check the first field                                                                    
+    output_fields = string_io.string.split(',')                                                                               
+    assert_equal "This is a task", output_fields[0]
+  end
 end

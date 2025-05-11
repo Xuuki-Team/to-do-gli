@@ -19,7 +19,7 @@ module Todo
     todo_file = File.expand_path(global_options[:f] || TODO_FILE)
 
     # Your command logic here
-    new_task = ARGV.shift
+    new_task =  args.first
 
     File.open(todo_file,'a') do |file|
       Todo.write_todo(file,new_task)
