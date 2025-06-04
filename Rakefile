@@ -25,7 +25,7 @@ end
 
 task :default => :test
 
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format pretty -x"
-  t.fork = false
+Cucumber::Rake::Task.new(:features) do |t|                                                                                                                                                             
+  t.cucumber_opts = ["features", "--format", "pretty", "-x"]                                                                                                                                           
+  t.fork = false                                                                                                                                                                                       
 end
