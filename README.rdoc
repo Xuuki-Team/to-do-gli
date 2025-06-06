@@ -6,4 +6,7 @@ run 'rake features' - to describe what the app is
 :include:xuuki-do-list.rdoc
 
 gem install cucumber
+gem install mocha
+gem install rspec
+gem install rdoc
 
