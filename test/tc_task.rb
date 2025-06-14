@@ -5,7 +5,9 @@ require 'mocha/test_unit'
 require 'stringio'
 include Todo
 
+
 class TaskTest < Test::Unit::TestCase
+  
   def teardown
     File.unstub(:open)
   end
@@ -38,4 +40,20 @@ class TaskTest < Test::Unit::TestCase
     output_fields = string_io.string.split(',')                                                                               
     assert_equal "This is a task", output_fields[0]
   end
+
+  def test_cannot_open_file
+    ex_msg = "Operation not permitted"
+    File.stubs(:open).raises(Errno::EPERM.new(ex_msg))
+    global_options = { f: 'foo.txt' }                                                                        
+    options = { f: true, p: nil }                                                                             
+    args = ["This is a task"]
+
+    ex = assert_raises RuntimeError do
+      new_task(global_options, options, args)
+    end
+
+    todofile = File.expand_path(global_options[:f])
+    assert_match /^Couldn't open #{todofile} for appending: #{ex_msg}/,ex.message
+  end
+
 end

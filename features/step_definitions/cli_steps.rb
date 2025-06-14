@@ -6,13 +6,13 @@ end
 # todo -f /tmp/todo.txt new 'Some new task', you can create a step definition in 
 # Ruby. Here's how you can define it:                                                                                                                                                               
 
-When(/^I successfully run `todo -f \/tmp\/todo\.txt new 'Some new task'`$/) do                                                                                              
+When(/^I successfully run `todo -f \/tmp\/todo\.txt new 'Some new task'`$/) do 
   command = "bundle exec bin/xuuki-do-list -f /tmp/todo.txt new 'Some new task'"
   @output = `#{command}`                                                                                                                                                    
   expect($?.exitstatus).to eq(0)                                                                                                                                            
   expect(@output).to include("args - Some new task")
   expect(@output).to include("Task added.")                                                                                                                                 
-end                                                                                                                                                                         
+end                                                                                                                                                                        
 
 #  • Command Execution: The command is executed using backticks, which captures the output.                                                                                    
 #  • Exit Status Check: It checks if the command was successful by verifying the exit status is 0.                                                                             

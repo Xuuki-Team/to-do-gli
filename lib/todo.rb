@@ -4,12 +4,13 @@ module Todo
   end
 
   def new_task(global_options,options,args)
-    puts "Global:"
-    puts "-f - #{global_options[:f]}"
-    puts "Command:"
-    puts "-f - #{options[:f] ? 'true' : 'false'}"
-    puts "-p - #{options[:p]}"
-    puts "args - #{args.join(' ')}"
+    # Keeping puts section until satisfied with knowledge about passing different args
+    # puts "Global:"
+    # puts "-f - #{global_options[:f]}"
+    # puts "Command:"
+    # puts "-f - #{options[:f] ? 'true' : 'false'}"
+    # puts "-p - #{options[:p]}"
+    # puts "args - #{args.join(' ')}"
 
     # Check if args is empty or contains only empty strings                                                                   
     if args.empty? || args.all?(&:empty?)                                                                                     
@@ -21,9 +22,13 @@ module Todo
     # Your command logic here
     new_task =  args.first
 
-    File.open(todo_file,'a') do |file|
-      Todo.write_todo(file,new_task)
-      puts "Task added."
+    begin                                                                               
+     File.open(todo_file, 'a') do |file|                                               
+       Todo.write_todo(file, new_task)                                                 
+       puts "Task added."                                                              
+     end                                                                               
+    rescue SystemCallError => ex                                                        
+     raise RuntimeError, "Couldn't open #{todo_file} for appending: #{ex.message}"     
     end
   end
 end
