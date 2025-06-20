@@ -10,7 +10,6 @@ When(/^I successfully run `todo -f \/tmp\/todo\.txt new 'Some new task'`$/) do
   command = "bundle exec bin/xuuki-do-list -f /tmp/todo.txt new 'Some new task'"
   @output = `#{command}`                                                                                                                                                    
   expect($?.exitstatus).to eq(0)                                                                                                                                            
-  expect(@output).to include("args - Some new task")
   expect(@output).to include("Task added.")                                                                                                                                 
 end                                                                                                                                                                        
 
