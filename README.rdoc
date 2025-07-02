@@ -1,5 +1,7 @@
 = xuuki-do-list
 
+bundle install --path vendor/bundle
+
 Describe your project here
 run 'rake features' - to describe what the app is
 
