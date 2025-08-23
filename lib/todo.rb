@@ -4,14 +4,6 @@ module Todo
   end
 
   def new_task(global_options,options,args)
-    # Keeping puts section until satisfied with knowledge about passing different args
-    # puts "Global:"
-    # puts "-f - #{global_options[:f]}"
-    # puts "Command:"
-    # puts "-f - #{options[:f] ? 'true' : 'false'}"
-    # puts "-p - #{options[:p]}"
-    # puts "args - #{args.join(' ')}"
-
     # Check if args is empty or contains only empty strings                                                                   
     if args.empty? || args.all?(&:empty?)                                                                                     
       raise "You must provide tasks on the command-line or standard input"                                                    

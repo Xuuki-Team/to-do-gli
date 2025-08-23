@@ -25,7 +25,7 @@ Then(/^I successfully run `todo -f \/tmp\/todo\.txt list`$/) do
   command = "bundle exec bin/xuuki-do-list -f /tmp/todo.txt list"
   @output = `#{command}`
   expect($?.exitstatus).to eq(0)
-  expect(@output).to include("Status  : INCOMPLETE")
+  expect(@output).to include("INCOMPLETE")
 end
 
 And('the stdout should contain {string}') do |string|

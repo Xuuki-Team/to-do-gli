@@ -1,9 +1,16 @@
+# To Do (gli)
+
+Did you use cat -n README.md to display me?
+
+Use 'eval "$(sed -n '8p' README.md)"' to execute the lilypond cmd on line 8.
+
+```
+  rake features
+```
+
 = xuuki-do-list
 
 bundle install --path vendor/bundle
-
-Describe your project here
-run 'rake features' - to describe what the app is
 
 :include:xuuki-do-list.rdoc
 
