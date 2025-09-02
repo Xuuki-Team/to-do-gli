@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'gli'
 require 'xuuki-do-list'
-
+require 'todo.rb'
 require 'rubygems'
 include GLI::App
+include Todo
 
 TODO_FILE = File.expand_path('~/todo.txt')
 
@@ -19,7 +21,7 @@ class App
   # arguments :strict
 
   desc 'Path to the todo file'
-  default_value '~/.todo.txt'
+  default_value File.join(ENV['HOME'],'.todo.txt')
   arg_name 'todo_file'
   flag [:f,:filename] 
 
@@ -50,39 +52,17 @@ class App
     c.switch :f
 
     c.action do |global_options,options,args|
-      puts "Global:"
-      puts "-f - #{global_options[:f]}"
-      puts "Command:"
-      puts "-f - #{options[:f] ? 'true' : 'false'}"
-      puts "-p - #{options[:p]}"
-      puts "args - #{args.join(' ')}"
-      todo_file = File.expand_path(global_options[:f] || TODO_FILE)
-
-      # Your command logic here
-      new_task = ARGV.shift
-
-      File.open(todo_file,'a') do |file|
-        write_todo(file,new_task)
-        puts "Task added."
-      end
+      new_task(global_options,options,args)
     end
   end
 
   desc 'List tasks'
-  arg_name 'Describe arguments to list here'
   command :list do |c|
     c.desc 'Format of the output'
     c.arg_name 'csv|pretty'
-    c.default_value 'pretty'
     c.flag :format
 
     c.action do |global_options, options, args| 
-      puts "Global:"
-      puts "-f - #{global_options[:f]}"
-      puts "Command:"
-      puts "-f - #{options[:f] ? 'true' : 'false'}"
-      puts "-p - #{options[:p]}"
-      puts "args - #{args.join(' ')}"
       todo_file = File.expand_path(global_options[:f] || TODO_FILE)
 
       File.open(todo_file,'r') do |file|
@@ -100,6 +80,7 @@ class App
             printf("      Completed : %s\n", completed) unless completed.nil? || completed.empty?                                                        
           elsif options[:format] == 'csv'                                    
             # Use the machine-readable CSV format                            
+            complete_flag = completed ? "C" : "U"
             printf("%d,%s,%s,%s,%s\n", counter, name, status, created,completed)                                                                 
           end
           counter += 1
